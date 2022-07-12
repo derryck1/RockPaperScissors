@@ -1,6 +1,8 @@
-function computerPlay(a) {
-    a = Math.floor(Math.random() * 3) + 1;
-    
+
+//
+function computerPlay() {
+    let a = Math.floor(Math.random() * 3) + 1;
+     
     return (
         a == 1 ? "Rock"
         : a == 2 ? "Paper"
