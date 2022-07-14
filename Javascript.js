@@ -34,7 +34,7 @@ you won ${playerScore} of them, the npc won ${npcScore} of them, and there were 
 }
 
 
-//runs a single game of rock paper scissors
+//runs a single game of rock paper scissors 
 function playRound(playerSelection, computerSelection) {
     let playerPlay = prompt("Rock, Paper, or Scissors", "?");
     playerSelection = playerPlay;
@@ -55,7 +55,6 @@ function  computerPlay() {
 }
 
 //creates the parameters for what a win looks like through boolean comparisons
-
 function winSchema(a, b) {
     return ( 
     //Rock POV        
