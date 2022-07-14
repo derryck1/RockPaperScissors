@@ -123,8 +123,7 @@ function npcScissorCount() {
     npcscissors += 1;
 }
 
-//invalid game function
-
+//invalid Round Function
 function invalidRound() {
     console.log("Enter a valid value of either Rock, Paper or Scissors")
     playRound();
