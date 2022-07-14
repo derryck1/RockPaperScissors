@@ -1,4 +1,4 @@
-//Base Values for counting
+//Base Values for counting and score keeping
 let rock = 0;
 let paper = 0;
 let scissors = 0;
@@ -33,14 +33,19 @@ you won ${playerScore} of them, the npc won ${npcScore} of them, and there were 
         )
 }
 
-
+//creates a case-insensitive version of a string for Rock Paper or Scissors
+function caseInsensitive(a) {
+    return a.charAt(0).toUpperCase() + a.slice(1).toLowerCase();
+  }
+  
 //runs a single game of rock paper scissors 
 function playRound(playerSelection, computerSelection) {
-    let playerPlay = prompt("Rock, Paper, or Scissors", "?");
+    let playerPlay = caseInsensitive(prompt("Rock, Paper, or Scissors", "?"))
     playerSelection = playerPlay;
     computerSelection = computerPlay();
     return winSchema(playerSelection, computerSelection);
 }
+
 
 //Defines the paramters for the NPC's choices
 // returns a string based on the randomzied number between 1 and 3
@@ -49,8 +54,7 @@ function  computerPlay() {
     return (
         a == 1 ? "Rock"
         : a == 2 ? "Paper"
-        : a == 3 ? "Scissors" 
-        : "Computer Error"
+        : "Scissors" 
     )
 }
 
@@ -125,8 +129,7 @@ function npcScissorCount() {
 //invalid Round Function
 function invalidRound() {
     console.log("Enter a valid value of either Rock, Paper or Scissors")
-    playRound();
-    
+    playRound();    
 }
 
-    console.log(game());
+console.log(game());
