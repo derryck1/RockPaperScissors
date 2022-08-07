@@ -8,46 +8,38 @@ let npcscissors = 0;
 let ties = 0;
 let playerScore = 0; 
 let npcScore = 0;
-let totalRounds;
+let thisHolder = "" ;
 
 
-//runs 5 Rounds of Rock Paper Scissors and Returns the winner of the game,  the amount of rounds played, 
-//how many games the player won, and how many games the npc won.
-function game() {
-    for (i = 0; i < 5; i++) {
-        playRound()
-        playerScore = rock + paper + scissors
-        npcScore = npcrock + npcpaper + npcscissors
-        totalRounds = npcScore + playerScore + ties;
-        console.log(`Current Score; Player: ${playerScore}, NPC: ${npcScore}, ${ties} Ties`)
-    }
-    
-    return (
-        playerScore > npcScore ? `YOU WIN THE ENTIRE GAME. GREAT JOB. There were ${totalRounds} rounds,
-you won ${playerScore} of them, the npc won ${npcScore} of them, and there were ${ties} ties.`
-        
-        : npcScore > playerScore ?`THE NPC WON THE ENTIRE GAME. TOUGH LUCK. There were ${totalRounds} rounds, 
-you won ${playerScore} of them, the npc won ${npcScore} of them, and there were ${ties} ties.`
-    
-        : `Game cancelled. The player didn't enter Rock, Paper or Scissors`
-        )
+//starts or restarts the game setting all values to 0
+function restart() {
+    enableButtons();
+    playerScore = 0;
+    npcScore = 0;
+    playerScore2.innerText = ""
+    npcScore2.innerText = "";
+    lastRound.textContent = ""
 }
 
-//creates a case-insensitive version of a string for Rock Paper or Scissors
-function caseInsensitive(a) {
-    return a.charAt(0).toUpperCase() + a.slice(1).toLowerCase();
-  }
-  
-//runs a single game of rock paper scissors 
-function playRound(playerSelection, computerSelection) {
-    let playerPlay = caseInsensitive(prompt("Rock, Paper, or Scissors", "?"))
-    playerSelection = playerPlay;
+//checks the id of the clicked event and runs a round based on the clicked event
+function playRound(computerSelection) {
     computerSelection = computerPlay();
-    return winSchema(playerSelection, computerSelection);
+
+ if (this.id == "rock") {
+         winSchema("Rock", computerSelection)
+    } else  if (this.id == "paper") {
+         winSchema("Paper", computerSelection)
+    } else  if (this.id == "scissors") {
+         winSchema("Scissors", computerSelection)
+    }
+
+    thisHolder = this.innerText;
+    lastRound.textContent = `Player Choice: ${thisHolder} | NPC Choice: ${computerSelection}`
+
+
 }
 
-
-//Defines the paramters for the NPC's choices
+//Defines the parameters for the NPC's choices
 // returns a string based on the randomzied number between 1 and 3
 function  computerPlay() {
     let a = Math.floor(Math.random() * 3) + 1;
@@ -56,80 +48,155 @@ function  computerPlay() {
         : a == 2 ? "Paper"
         : "Scissors" 
     )
-}
+    
+} 
 
-//creates the parameters for what a win looks like through boolean comparisons
+//Determines if the player or npce has won 5 rounds yet. If the player wins...., if the npc wins ...
 function winSchema(a, b) {
-    return ( 
+
+
+
+
+    
     //Rock POV        
     a == "Rock" && b == "Scissors" ? rockCount()
     : a == "Rock" && b == "Paper" ? npcPaperCount()
-    : a == "Rock" && b == "Rock" ? tieCount() 
-    //Paper POV
     : a === "Paper" && b === "Scissors" ? npcScissorCount()
     : a === "Paper" && b === "Rock" ? paperCount()
-    : a === "Paper" && b === "Paper" ? tieCount()
-    //Scissors POV
-    : a === "Scissors" && b === "Scissors" ? tieCount()
     : a === "Scissors" && b === "Rock" ? npcRockCount()
     : a === "Scissors" && b === "Paper" ? scissorCount()
-    : invalidRound()
-    )
+    : "eh"
+
+
+    playerScore2.innerText = `Player Score: ${playerScore}`;
+    npcScore2.innerText = `Computer Score: ${npcScore}`;
+
+    if (playerScore == 5) {
+        playerScore2.innerText = "You won the game! Great job! :D"
+        npcScore2.innerText = "";
+        disableButtons();
+
+    } else if (npcScore == 5) {
+        npcScore2.innerText = "The NPC won the game, better luck next time :("
+        playerScore2.innerText = ""
+        disableButtons();
+
+    }
 }
 
-//counter functions
-
-//Tie counter. Adds to counter when there is a tie, and re-runs the game of Rock Paper Scissors
-function tieCount() {
-    console.log("This round was a tie! Go again!")
-    ties += 1;
-    console.log(`Current Score; Player: ${playerScore}, NPC: ${npcScore}, ${ties} Ties`)
-    playRound();
-    
+//disables the Rock, Paper, and Scissors Buttons
+function disableButtons() {
+    document.getElementById("rock").disabled = true;
+    document.getElementById("paper").disabled = true;
+    document.getElementById("scissors").disabled = true;
 }
 
+//re-enables the Rock Paper and Scissor buttons
+function enableButtons() {
+    document.getElementById("rock").disabled = false;
+    document.getElementById("paper").disabled = false;
+    document.getElementById("scissors").disabled = false;
+}
+
+
+//counter functions 
 //player Rock Win Counter
+
 function rockCount() {
-    console.log("You won this round with Rock! Nice!")
-    rock += 1;
+    playerScore += 1;
 }
 
 //player Paper Win Counter
 function paperCount() {
-    console.log("You won this round with Paper! Nice!")
-    paper += 1;
-
+    playerScore +=1;
 }
 
 //player Scissor Win Counter
 function scissorCount() {
-    console.log("You won this round with Scissors! Nice!")
-    scissors += 1;
-
+    playerScore +=1;
 }
 
 //npc Rock Win Counter
 function npcRockCount() {
-    console.log("The computer won this round with Rock! Damn")
-    npcrock += 1;
+    npcScore += 1;
 }
+
 
 //npc Paper Win Counter
 function npcPaperCount() {
-    console.log("The computer won this round with Paper! Damn")
-    npcpaper += 1;
+    npcScore += 1;
 }
 
-//npc Scissor Win Counter
+//npc Paper Win Counter
 function npcScissorCount() {
-    console.log("The computer won this round with Scissors! Damn")
-    npcscissors += 1;
 }
 
-//invalid Round Function
-function invalidRound() {
-    console.log("Enter a valid value of either Rock, Paper or Scissors")
-    playRound();    
-}
 
-console.log(game());
+
+
+
+//DOM Element
+//References the buttons created in the html
+const rockButton = document.querySelector ("#rock")
+const paperButton = document.querySelector ("#paper")
+const scissorsButton = document.querySelector ("#scissors")
+const restartButton = document.querySelector ("#restart")
+
+//listens for the clicks and runs playRound after each click
+rockClick = rockButton.addEventListener("click", playRound);
+paperClick = paperButton.addEventListener("click", playRound);
+scissorClick = scissorsButton.addEventListener("click", playRound);
+restartClick = restartButton.addEventListener("click", restart);
+
+
+//references previosly created score element.
+const score = document.querySelector (".score")
+
+//references previously created content element
+const content = document.querySelector (".content")
+
+//Creates Player Score Bucket
+const playerScore2 = document.createElement("playerScore");
+playerScore2.setAttribute("id", "playerScore2")
+//Creates Ai Score Bucket
+const npcScore2 = document.createElement("npcScore");
+npcScore2.setAttribute("id", "npcScore2")
+score.append(playerScore2,npcScore2);
+
+//creates Last Round Element
+const lastRound = document.createElement("div");
+lastRound.classList.add ("lastRound");
+content.append(lastRound);
+lastRound.style.cssText = "margin: 20px";
+
+const playerChoice = document.createElement("SPAN")
+playerChoice.textContent = thisHolder;
+const npcChoice = document.createElement("SPAN");
+npcChoice.textContent = computerPlay();
+
+
+
+
+
+
+
+
+
+
+/*
+function colorWin() {
+    if (npcScore < playerScore) {
+        npcChoice.style.cssText = "color:red"
+        playerChoice.style.cssText = "color:green";
+        return lastRound.textContent = `Player Choice: ${playerChoice.innerText}  NPC Choice: ${npcChoice.innerText}`
+
+
+    } else if (npcScore > playerScore) {
+        npcChoice.style.cssText = "color:green"
+        playerChoice.style.cssText = "color:red";
+        return lastRound.textContent = `Player Choice: ${playerChoice.innerText}  NPC Choice: ${npcChoice.innerText}`
+    }
+}
+*/
+
+
